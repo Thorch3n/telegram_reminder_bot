@@ -8,7 +8,7 @@ last_messages = {}
 
 # Словарь для перевода единиц времени
 time_units = {
-    'm': 'минут(-у,-ы)',
+    'm': 'минут(-а,-ы)',
     'h': 'час(-а,-ов)',
     'd': 'день(-дней)',
     'w': 'неделю(-ь)',
@@ -29,19 +29,21 @@ def help_command(update: Update, context: CallbackContext):
 def handle_message(update: Update, context: CallbackContext):
     user_id = update.message.from_user.id
     chat_id = update.message.chat_id
+    username = update.message.from_user.username  # Получаем username пользователя
     message = update.message.text
 
     bot_username = context.bot.username
 
     # Проверяем, содержит ли сообщение команду "ctrl NM" и упомянут ли бот
-    match = re.search(rf'@{bot_username} ctrl (\d+)([mhdwmo])', message, re.IGNORECASE)
+    match = re.search(rf'@{bot_username} ctrl (\d+)([mhwdmo]+)', message, re.IGNORECASE)
     if match:
         interval = int(match.group(1))
         unit = match.group(2)
         task = last_messages.get((chat_id, user_id), "нет задачи")  # Используем последнее сообщение пользователя как задачу
-        schedule_task(context.job_queue, chat_id, task, interval, unit)
-        context.bot.send_message(chat_id, text=f"Задача *{task}* принята. Напомню о ней через {interval} {time_units[unit]}.", parse_mode='Markdown')
+        schedule_task(context.job_queue, chat_id, task, interval, unit, username)
+        context.bot.send_message(chat_id, text=f"Задача *{task}* принята. Напомню о ней через {interval} {time_units[unit]}.", parse_mode="Markdown")
     else:
         # Сохраняем текущее сообщение как последнее сообщение пользователя
         last_messages[(chat_id, user_id)] = message
-        update.message.reply_text(f"Сообщение сохранено. Используйте @{bot_username} ctrl NM для создания напоминания.")
+        if update.message.chat.type == 'private':
+            update.message.reply_text("Сообщение сохранено. Используйте @bot_name ctrl NM для создания напоминания.")

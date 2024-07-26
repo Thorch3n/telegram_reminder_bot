@@ -7,7 +7,7 @@ def scheduler(job_queue):
     background_scheduler.start()
     job_queue.scheduler = background_scheduler
 
-def schedule_task(job_queue, chat_id, task, interval, unit):
+def schedule_task(job_queue, chat_id, task, interval, unit, username):
     if unit == 'm':
         delta = timedelta(minutes=interval)
     elif unit == 'h':
@@ -25,9 +25,10 @@ def schedule_task(job_queue, chat_id, task, interval, unit):
     tz = pytz.timezone('UTC')
     run_time = datetime.now(tz) + delta
 
-    job_queue.run_once(send_reminder, run_time, context=(chat_id, task))
+    job_queue.run_once(send_reminder, run_time, context=(chat_id, task, username))
 
 def send_reminder(context):
     job = context.job
-    chat_id, task = job.context
-    context.bot.send_message(chat_id, text=f"Напоминание: {task}")
+    chat_id, task, username = job.context
+    user_mention = f"@{username}"  # Упомянуть пользователя по username
+    context.bot.send_message(chat_id, text=f"Напоминание: {user_mention} {task}", parse_mode="Markdown")
