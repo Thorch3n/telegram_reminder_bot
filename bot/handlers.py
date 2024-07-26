@@ -23,7 +23,7 @@ def start_command(update: Update, context: CallbackContext):
     update.message.reply_text("Привет! Я бот-напоминалка. Используйте команду /help для справки.")
 
 def help_command(update: Update, context: CallbackContext):
-    update.message.reply_text("Используйте @bot_name ctrl NM для создания напоминания, где N - интервал, а M - единица времени (h - час, d - день, w - неделя, m - месяц).")
+    update.message.reply_text("Используйте @reminber_bot ctrl NM для создания напоминания, где N - интервал, а M - единица времени (h - час, d - день, w - неделя, m - месяц).")
 
 def handle_message(update: Update, context: CallbackContext):
     user_id = update.message.from_user.id
