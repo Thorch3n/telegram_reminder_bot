@@ -6,6 +6,14 @@ from .scheduler import schedule_task
 # Словарь для хранения последнего сообщения пользователя
 last_messages = {}
 
+# Словарь для перевода единиц времени
+time_units = {
+    'h': 'час(-a,-ов)',
+    'd': 'день(-дней)',
+    'w': 'неделю(-ь)',
+    'm': 'месяц(-а,-ев)'
+}
+
 def register_handlers(dispatcher):
     dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), handle_message))
     dispatcher.add_handler(CommandHandler("start", start_command))
@@ -31,10 +39,9 @@ def handle_message(update: Update, context: CallbackContext):
         unit = match.group(2)
         task = last_messages.get((chat_id, user_id), "нет задачи")  # Используем последнее сообщение пользователя как задачу
         schedule_task(context.job_queue, chat_id, task, interval, unit)
-        context.bot.send_message(chat_id, text=f"#{task}# принята. Напомню о ней через {interval} {unit} (часов, дней, недель, месяцев).")
+        context.bot.send_message(chat_id, text=f"Задача *{task}* принята. Напомню о ней через {interval} {time_units[unit]}.")
     else:
         # Сохраняем текущее сообщение как последнее сообщение пользователя
         last_messages[(chat_id, user_id)] = message
-        print(f"Message saved: {message} for user_id: {user_id} in chat_id: {chat_id}")
         if update.message.chat.type == 'private':
             update.message.reply_text("Сообщение сохранено. Используйте @bot_name ctrl NM для создания напоминания.")
