@@ -8,9 +8,7 @@ def scheduler(job_queue):
     job_queue.scheduler = background_scheduler
 
 def schedule_task(job_queue, chat_id, task, interval, unit, username):
-    if unit == 'm':
-        delta = timedelta(minutes=interval)
-    elif unit == 'h':
+    if unit == 'h':
         delta = timedelta(hours=interval)
     elif unit == 'd':
         delta = timedelta(days=interval)

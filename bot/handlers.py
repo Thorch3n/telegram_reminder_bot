@@ -8,7 +8,6 @@ last_messages = {}
 
 # Словарь для перевода единиц времени
 time_units = {
-    'm': 'минут(-а,-ы)',
     'h': 'час(-а,-ов)',
     'd': 'день(-дней)',
     'w': 'неделю(-ь)',
@@ -24,7 +23,7 @@ def start_command(update: Update, context: CallbackContext):
     update.message.reply_text("Привет! Я бот-напоминалка. Используйте команду /help для справки.")
 
 def help_command(update: Update, context: CallbackContext):
-    update.message.reply_text("Используйте @reminber_bot ctrl NM для создания напоминания, где N - интервал, а M - единица времени (m - минута, h - час, d - день, w - неделя, mo - месяц).")
+    update.message.reply_text("Используйте @reminber_bot ctrl NM для создания напоминания, где N - интервал, а M - единица времени (h - час, d - день, w - неделя, mo - месяц).")
 
 def handle_message(update: Update, context: CallbackContext):
     user_id = update.message.from_user.id
@@ -35,7 +34,7 @@ def handle_message(update: Update, context: CallbackContext):
     bot_username = context.bot.username
 
     # Проверяем, содержит ли сообщение команду "ctrl NM" и упомянут ли бот
-    match = re.search(rf'@{bot_username} ctrl (\d+)([mhwdmo]+)', message, re.IGNORECASE)
+    match = re.search(rf'@{bot_username} ctrl (\d+)([hdwmo])', message, re.IGNORECASE)
     if match:
         interval = int(match.group(1))
         unit = match.group(2)
