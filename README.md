@@ -16,7 +16,7 @@ Telegram Reminder Bot - это бот для Telegram, который позво
 ### Шаг 1: Клонирование репозитория
 
 ```bash
-git clone https://github.com/Thorch3n/telegram_reminder_bot
+git clone https://github.com/Thorch3n/telegram_reminder_bot.git
 cd telegram_reminder_bot
 ```
 
