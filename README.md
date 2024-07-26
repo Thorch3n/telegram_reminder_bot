@@ -16,7 +16,7 @@ Telegram Reminder Bot - это бот для Telegram, который позво
 ### Шаг 1: Клонирование репозитория
 
 ```bash
-git clone https://github.com/thorch3n/telegram_reminder_bot.git
+git clone https://github.com/Thorch3n/telegram_reminder_bot
 cd telegram_reminder_bot
 ```
 
@@ -58,7 +58,7 @@ python main.py
 2. Установите напоминание:
 
    - Пользователь: @bot_name ctrl 5d
-   - Бот: "Купить молоко принята. Напомню о ней через 5 дней."   
+   - Бот: "Задача *Купить молоко* принята. Напомню о ней через 5 час(-a,-ов)."   
 
 # Скриншот примера
 ![alt Скриншот диалога](Dialog.png)
